@@ -7,36 +7,30 @@
 
 ### Regla 1 — Particiones de equivalencia: Precio base
 
-| Partición | Tipo | Valor representativo | Resultado esperado |
-|-----------|------|---------------------|-------------------|
-| Precio mayor que cero | Válida | 50000 | Producto creado correctamente |
-| Precio igual a cero | Inválida | 0 | Error: "El precio base debe ser mayor que cero" |
-| Precio negativo | Inválida | -100 | Error: "El precio base debe ser mayor que cero" |
+- **Precio mayor que cero** (Válida) → valor representativo: 50000 → Producto creado correctamente
+- **Precio igual a cero** (Inválida) → valor representativo: 0 → Error: "El precio base debe ser mayor que cero"
+- **Precio negativo** (Inválida) → valor representativo: -100 → Error: "El precio base debe ser mayor que cero"
 
 ---
 
 ### Regla 2 — Particiones de equivalencia: Descuento
 
-| Partición | Tipo | Valor representativo | Resultado esperado |
-|-----------|------|---------------------|-------------------|
-| Descuento entre 0% y 40% | Válida | 20 | Descuento aplicado correctamente |
-| Descuento igual a 0% | Válida | 0 | Precio sin descuento |
-| Descuento igual a 40% | Válida | 40 | Descuento máximo aplicado |
-| Descuento mayor a 40% | Inválida | 50 | Error: "El descuento no puede superar el 40%" |
-| Descuento negativo | Inválida | -5 | Error: "El descuento no puede ser negativo" |
+- **Descuento entre 0% y 40%** (Válida) → valor representativo: 20 → Descuento aplicado correctamente
+- **Descuento igual a 0%** (Válida) → valor representativo: 0 → Precio sin descuento
+- **Descuento igual a 40%** (Válida) → valor representativo: 40 → Descuento máximo aplicado
+- **Descuento mayor a 40%** (Inválida) → valor representativo: 50 → Error: "El descuento no puede superar el 40%"
+- **Descuento negativo** (Inválida) → valor representativo: -5 → Error: "El descuento no puede ser negativo"
 
 ---
 
 ### Regla 2 — Análisis de valores límite: rango 0%–40%
 
-| Valor | Tipo | Resultado esperado |
-|-------|------|--------------------|
-| -1% | Fuera del límite inferior | Rechazado |
-| 0% | Límite inferior exacto | Aceptado |
-| 1% | Justo dentro del límite inferior | Aceptado |
-| 39% | Justo dentro del límite superior | Aceptado |
-| 40% | Límite superior exacto | Aceptado |
-| 41% | Fuera del límite superior | Rechazado |
+- **-1%** → Fuera del límite inferior → Rechazado
+- **0%** → Límite inferior exacto → Aceptado
+- **1%** → Justo dentro del límite inferior → Aceptado
+- **39%** → Justo dentro del límite superior → Aceptado
+- **40%** → Límite superior exacto → Aceptado
+- **41%** → Fuera del límite superior → Rechazado
 
 ---
 
@@ -50,15 +44,39 @@
 
 ## Casos de prueba
 
-| ID | Regla | Descripción | Precondición | Datos de entrada | Pasos | Resultado esperado | Tipo |
-|----|-------|-------------|--------------|-----------------|-------|--------------------|------|
-| TC-01 | R1 | Crear producto con precio válido | Ninguna | nombre="Libro", precio=50000 | Instanciar Producto | Producto creado con precio 50000 | Positivo |
-| TC-02 | R1 | Crear producto con precio cero | Ninguna | nombre="Libro", precio=0 | Instanciar Producto | ValueError: precio debe ser mayor que cero | Negativo |
-| TC-03 | R1 | Crear producto con precio negativo | Ninguna | nombre="Libro", precio=-100 | Instanciar Producto | ValueError: precio debe ser mayor que cero | Negativo |
-| TC-04 | R2 | Aplicar descuento válido del 20% | Producto con precio 10000 | descuento=20 | Llamar aplicar_descuento(20) | Descuento aplicado, precio con descuento = 8000 | Positivo |
-| TC-05 | R2 | Aplicar descuento en límite inferior 0% | Producto con precio 10000 | descuento=0 | Llamar aplicar_descuento(0) | Descuento aplicado, precio con descuento = 10000 | Borde |
-| TC-06 | R2 | Aplicar descuento en límite superior 40% | Producto con precio 10000 | descuento=40 | Llamar aplicar_descuento(40) | Descuento aplicado, precio con descuento = 6000 | Borde |
-| TC-07 | R2 | Aplicar descuento mayor al 40% | Producto con precio 10000 | descuento=41 | Llamar aplicar_descuento(41) | ValueError: descuento no puede superar el 40% | Negativo |
-| TC-08 | R3 | Calcular precio final con IVA | Producto con precio 10000, descuento 20% | ninguno | Llamar calcular_precio_final() | 10000 * 0.80 * 1.19 = 9520.0 | Positivo |
-| TC-09 | R3 | Precio final con descuento 0% incluye solo IVA | Producto con precio 10000, descuento 0% | ninguno | Llamar calcular_precio_final() | 10000 * 1.19 = 11900.0 | Borde |
-| TC-10 | R2 | Aplicar descuento negativo | Producto con precio 10000 | descuento=-5 | Llamar aplicar_descuento(-5) | ValueError: descuento no puede ser negativo | Negativo |
+- **TC-01** | R1 | Crear producto con precio válido | Sin precondición | nombre="Libro", precio=50000 | Instanciar Producto | Producto creado con precio 50000 | Positivo
+- **TC-02** | R1 | Crear producto con precio cero | Sin precondición | nombre="Libro", precio=0 | Instanciar Producto | ValueError: precio debe ser mayor que cero | Negativo
+- **TC-03** | R1 | Crear producto con precio negativo | Sin precondición | nombre="Libro", precio=-100 | Instanciar Producto | ValueError: precio debe ser mayor que cero | Negativo
+- **TC-04** | R2 | Aplicar descuento válido del 20% | Producto con precio 10000 | descuento=20 | Llamar aplicar_descuento(20) | Descuento aplicado, precio con descuento = 8000 | Positivo
+- **TC-05** | R2 | Descuento en límite inferior 0% | Producto con precio 10000 | descuento=0 | Llamar aplicar_descuento(0) | Precio con descuento = 10000 | Borde
+- **TC-06** | R2 | Descuento en límite superior 40% | Producto con precio 10000 | descuento=40 | Llamar aplicar_descuento(40) | Precio con descuento = 6000 | Borde
+- **TC-07** | R2 | Descuento mayor al 40% | Producto con precio 10000 | descuento=41 | Llamar aplicar_descuento(41) | ValueError: descuento no puede superar el 40% | Negativo
+- **TC-08** | R3 | Precio final con IVA y descuento 20% | Producto con precio 10000, descuento 20% | — | Llamar calcular_precio_final() | 9520.0 | Positivo
+- **TC-09** | R3 | Precio final sin descuento incluye solo IVA | Producto con precio 10000, descuento 0% | — | Llamar calcular_precio_final() | 11900.0 | Borde
+- **TC-10** | R2 | Descuento negativo rechazado | Producto con precio 10000 | descuento=-5 | Llamar aplicar_descuento(-5) | ValueError: descuento no puede ser negativo | Negativo
+
+---
+
+## Reporte de cobertura
+
+
+C:\Users\laura\OneDrive\Documentos\Universidad\5to semestre\uni\pruebas\parcial 1>python -m pytest tests/ --cov=src --cov-report=term-missing
+============================================================================== test session starts ==============================================================================
+platform win32 -- Python 3.14.0, pytest-8.3.5, pluggy-1.6.0
+rootdir: C:\Users\laura\OneDrive\Documentos\Universidad\5to semestre\uni\pruebas\parcial 1
+plugins: bdd-8.1.0, cov-6.1.0
+collected 11 items                                                                                                                                                               
+
+tests\test_producto.py ...........                                                                                                                                         [100%]
+
+================================================================================ tests coverage =================================================================================
+________________________________________________________________ coverage: platform win32, python 3.14.0-final-0 ________________________________________________________________
+
+Name              Stmts   Miss  Cover   Missing
+-----------------------------------------------
+src\__init__.py       0      0   100%
+src\producto.py      22      0   100%
+-----------------------------------------------
+TOTAL                22      0   100%
+============================================================================== 11 passed in 0.14s ===============================================================================
+
